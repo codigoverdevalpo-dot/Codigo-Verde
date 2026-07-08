@@ -1,0 +1,10 @@
+.DS_Store
+img/*.CR2
+img/*.xmp
+img/IMG_*
+*.zip
+*.pdf
+*.ai
+CodVerde_Carpeta/
+Nueva\ carpeta\ con\ elementos/
+boceto_temp/

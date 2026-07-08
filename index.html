@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta name="description" content="Código Verde — Comida saludable al paso en Calle Esmeralda #1098, Valparaíso. Menú inclusivo vegano, vegetariano y más, con ingredientes frescos locales."/>
+  <meta name="theme-color" content="#154212"/>
+  <title>Código Verde — Saludable, rápido y cerca de ti · Valparaíso</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <style>
+    html, body { overflow-x: hidden; }
+    html { scroll-behavior: smooth; }
+
+    .pattern-bg {
+      position: relative;
+    }
+    @keyframes pattern-drift {
+      from { background-position: 0 0; }
+      to   { background-position: 120px 120px; }
+    }
+
+    .pattern-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('elementos/patron56.svg');
+      background-repeat: repeat;
+      background-size: auto;
+      opacity: 0.30;
+      pointer-events: none;
+      z-index: 0;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%);
+      mask-image: linear-gradient(to bottom, transparent 0%, black 12%);
+      animation: pattern-drift 18s linear infinite;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .organic-shape {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Mobile menu transition */
+    #mobile-menu {
+      transition: max-height 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.35s ease;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+    }
+    #mobile-menu.open {
+      max-height: 320px;
+      opacity: 1;
+    }
+
+    /* Bounce on press */
+    .btn-bounce:active { transform: scale(0.95); }
+
+    /* Hero image rotate on hover */
+    .hero-img-wrap {
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      transform: rotate(3deg);
+    }
+    .hero-img-wrap:hover { transform: rotate(0deg); }
+
+    /* Carousel */
+    .carousel-slide {
+      position: absolute; inset: 0;
+      opacity: 0;
+      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .carousel-slide.active { opacity: 1; }
+
+    .carousel-dot {
+      width: 8px; height: 8px;
+      border-radius: 9999px;
+      background: rgba(255,255,255,0.45);
+      transition: background 0.3s, width 0.3s;
+      cursor: pointer;
+    }
+    .carousel-dot.active {
+      background: white;
+      width: 24px;
+    }
+
+    /* ── Responsive hero ── */
+    @media (max-width: 767px) {
+      .hero-section {
+        height: 36vh !important;
+        min-height: 180px !important;
+        margin-top: 0 !important;
+        padding: 0 !important;
+      }
+    }
+  </style>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-high": "#e9e8e5",
+            "inverse-primary": "#a1d494",
+            "primary-fixed-dim": "#a1d494",
+            "outline-variant": "#c2c9bb",
+            "on-primary-container": "#9dd090",
+            "secondary-fixed": "#fcdeb5",
+            "primary": "#154212",
+            "outline": "#72796e",
+            "on-surface": "#1a1c1a",
+            "error": "#ba1a1a",
+            "primary-fixed": "#bcf0ae",
+            "secondary-container": "#f9dbb2",
+            "tertiary-fixed": "#cbebc3",
+            "tertiary-fixed-dim": "#afcfa9",
+            "surface-container-lowest": "#ffffff",
+            "on-error-container": "#93000a",
+            "background": "#F5F0E8",
+            "surface": "#F5F0E8",
+            "surface-container-low": "#f4f3f1",
+            "on-tertiary-fixed": "#062108",
+            "surface-bright": "#F5F0E8",
+            "inverse-on-surface": "#f2f1ee",
+            "tertiary-container": "#3b5739",
+            "primary-container": "#2d5a27",
+            "tertiary": "#253f23",
+            "error-container": "#ffdad6",
+            "on-tertiary": "#ffffff",
+            "inverse-surface": "#2f312f",
+            "on-secondary-container": "#755f3e",
+            "surface-tint": "#3b6934",
+            "surface-dim": "#dbdad7",
+            "surface-container": "#efeeeb",
+            "on-error": "#ffffff",
+            "on-primary-fixed": "#002201",
+            "on-secondary": "#ffffff",
+            "on-tertiary-container": "#accba5",
+            "on-primary": "#ffffff",
+            "surface-variant": "#e3e2e0",
+            "secondary": "#705b3b",
+            "secondary-fixed-dim": "#dfc29b",
+            "on-background": "#1a1c1a",
+            "surface-container-highest": "#e3e2e0",
+            "on-surface-variant": "#42493e",
+            "on-secondary-fixed": "#271901"
+          },
+          borderRadius: {
+            "DEFAULT": "0.5rem",
+            "sm": "0.25rem",
+            "md": "0.75rem",
+            "lg": "1rem",
+            "xl": "1.5rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "xs": "4px",
+            "sm": "12px",
+            "base": "8px",
+            "md": "24px",
+            "gutter": "24px",
+            "lg": "48px",
+            "xl": "80px",
+            "container-max": "1200px"
+          },
+          fontFamily: {
+            "headline": ["Plus Jakarta Sans", "sans-serif"],
+            "body": ["Be Vietnam Pro", "sans-serif"]
+          },
+          fontSize: {
+            "headline-xl":  ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
+            "headline-xl-m":["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }],
+            "headline-lg":  ["32px", { lineHeight: "40px", fontWeight: "600" }],
+            "headline-md":  ["24px", { lineHeight: "32px", fontWeight: "600" }],
+            "body-lg":      ["18px", { lineHeight: "28px", fontWeight: "400" }],
+            "body-md":      ["16px", { lineHeight: "24px", fontWeight: "400" }],
+            "label-md":     ["14px", { lineHeight: "20px", letterSpacing: "0.05em", fontWeight: "600" }],
+            "caption":      ["12px", { lineHeight: "16px", fontWeight: "400" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-background text-on-background font-body text-body-md">
+
+  <!-- ═══════════════════════ NAV ═══════════════════════ -->
+  <header id="navbar" class="fixed w-full top-0 z-50">
+    <!-- Topbar dirección -->
+    <div class="w-full bg-primary text-on-primary flex justify-center items-center gap-xs py-1 px-md text-caption font-body">
+      <span class="material-symbols-outlined text-sm" style="font-size:14px;" aria-hidden="true">location_on</span>
+      <a href="https://maps.google.com/?q=Calle+Esmeralda+1098+Valparaiso" target="_blank" rel="noopener noreferrer"
+         class="hover:underline tracking-wide">
+        Calle Esmeralda #1098, Valparaíso
+      </a>
+    </div>
+    <!-- Navbar -->
+    <div class="bg-background/80 backdrop-blur-md transition-shadow duration-300">
+    <nav class="flex justify-between items-center px-md md:px-lg py-md max-w-container-max mx-auto">
+
+      <!-- Logo -->
+      <a href="#">
+        <img src="elementos/logo.svg" alt="Código Verde" class="h-14 w-auto object-contain">
+      </a>
+
+      <!-- Desktop links -->
+      <div class="hidden md:flex items-center gap-gutter">
+        <a href="#inicio"   class="font-body text-body-md text-primary font-semibold border-b-2 border-primary pb-0.5">Inicio</a>
+        <a href="#menu"     class="font-body text-body-md text-on-surface-variant hover:text-primary transition-colors">Menú</a>
+        <a href="#nosotros" class="font-body text-body-md text-on-surface-variant hover:text-primary transition-colors">Nuestros Valores</a>
+        <a href="#contacto" class="font-body text-body-md text-on-surface-variant hover:text-primary transition-colors">Contacto</a>
+      </div>
+
+      <div class="flex items-center gap-sm">
+        <span class="hidden md:flex items-center gap-xs font-body text-caption text-on-surface-variant">
+          <span class="material-symbols-outlined text-primary" style="font-size:16px;" aria-hidden="true">storefront</span>
+          Retira en el local
+        </span>
+        <a href="#pedir" class="bg-primary text-on-primary px-gutter py-sm rounded-full font-headline text-label-md btn-bounce shadow-lg shadow-primary/20 transition-transform hidden sm:inline-flex items-center gap-xs">
+          Pedir Ahora
+        </a>
+
+        <!-- Hamburger (mobile) -->
+        <button id="menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu"
+                class="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-[5px] rounded-lg hover:bg-surface-container transition-colors">
+          <span class="hamburger-line block w-5 h-0.5 bg-primary transition-all duration-300"></span>
+          <span class="hamburger-line block w-5 h-0.5 bg-primary transition-all duration-300"></span>
+          <span class="hamburger-line block w-5 h-0.5 bg-primary transition-all duration-300"></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile dropdown -->
+    <div id="mobile-menu" role="navigation" aria-label="Menú móvil">
+      <div class="flex flex-col px-md pb-md gap-sm border-t border-outline-variant">
+        <a href="#inicio"   class="py-sm font-body text-body-md text-primary font-semibold">Inicio</a>
+        <a href="#menu"     class="py-sm font-body text-body-md text-on-surface-variant hover:text-primary">Menú</a>
+        <a href="#nosotros" class="py-sm font-body text-body-md text-on-surface-variant hover:text-primary">Nuestros Valores</a>
+        <a href="#contacto" class="py-sm font-body text-body-md text-on-surface-variant hover:text-primary">Contacto</a>
+        <a href="#pedir" class="mt-xs bg-primary text-on-primary px-gutter py-sm rounded-full font-headline text-label-md text-center btn-bounce">
+          Pedir Ahora
+        </a>
+      </div>
+    </div>
+    </div>
+  </header>
+
+  <main class="pt-28" id="inicio">
+
+    <!-- ═══════════════════════ HERO ═══════════════════════ -->
+    <section class="hero-section relative w-full px-sm md:px-lg py-sm" style="height: 68vh; min-height: 420px; margin-top: 2rem;">
+
+      <div class="relative w-full h-full rounded-none md:rounded-[2rem] overflow-hidden shadow-2xl" id="hero-carousel">
+
+        <div class="carousel-slide active"><img src="banners/banner1.jpg" alt="Código Verde — banner 1" class="w-full h-full object-cover"/></div>
+        <div class="carousel-slide"><img src="banners/banner2.jpg" alt="Código Verde — banner 2" class="w-full h-full object-cover"/></div>
+        <div class="carousel-slide"><img src="banners/banner3.jpg" alt="Código Verde — banner 3" class="w-full h-full object-cover"/></div>
+        <div class="carousel-slide"><img src="banners/banner5-100.jpg" alt="Código Verde — banner 5" class="w-full h-full object-cover"/></div>
+
+        <!-- Flechas -->
+        <button id="carousel-prev" aria-label="Foto anterior"
+          class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 text-white flex items-center justify-center transition-colors btn-bounce">
+          <span class="material-symbols-outlined" style="font-size:22px;" aria-hidden="true">chevron_left</span>
+        </button>
+        <button id="carousel-next" aria-label="Foto siguiente"
+          class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 text-white flex items-center justify-center transition-colors btn-bounce">
+          <span class="material-symbols-outlined" style="font-size:22px;" aria-hidden="true">chevron_right</span>
+        </button>
+
+        <!-- Dots -->
+        <div id="carousel-dots" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-1.5 items-center"></div>
+
+
+      </div>
+    </section>
+
+    <div class="pattern-bg">
+
+    <!-- ═══════════════════════ POPULARES ═══════════════════════ -->
+    <section id="populares" class="py-lg md:py-xl">
+      <div class="max-w-container-max mx-auto px-md md:px-lg">
+
+        <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-lg md:mb-xl reveal">
+          <div class="text-center md:text-left">
+            <span class="inline-block py-1 px-4 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-headline text-label-md mb-sm">Lo más pedido</span>
+            <h2 class="font-headline text-headline-lg text-primary">Nuestros Favoritos</h2>
+          </div>
+          <a href="#menu" class="text-primary font-headline text-label-md flex items-center gap-xs hover:underline decoration-2 underline-offset-4 mt-md md:mt-0 justify-center md:justify-start">
+            Ver menú completo <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+
+          <!-- Card 1 -->
+          <div class="group bg-background rounded-3xl border border-outline-variant overflow-hidden hover:shadow-xl hover:border-primary/25 transition-all duration-300 reveal">
+            <div class="h-36 md:h-52 overflow-hidden">
+              <img src="img/cesar.jpeg" alt="Bowl Ensalada César" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="p-sm md:p-md">
+              <span class="inline-flex items-center gap-xs py-0.5 px-3 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-headline text-caption mb-sm">
+                <span class="material-symbols-outlined" style="font-size:12px;" aria-hidden="true">eco</span> Vegetariano
+              </span>
+              <h3 class="font-headline text-body-md md:text-headline-md text-primary mb-xs">Bowl César</h3>
+              <p class="font-body text-caption md:text-body-md text-on-surface-variant hidden sm:block">Lechuga romana, crutones artesanales, parmesano y aderezo césar casero.</p>
+              <p class="font-headline text-label-md md:text-body-lg text-primary mt-sm">$5.990</p>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="group bg-background rounded-3xl border border-outline-variant overflow-hidden hover:shadow-xl hover:border-primary/25 transition-all duration-300 reveal">
+            <div class="h-36 md:h-52 overflow-hidden">
+              <img src="img/mediterranea.jpg" alt="Bowl Ensalada Mediterránea" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="p-sm md:p-md">
+              <span class="inline-flex items-center gap-xs py-0.5 px-3 rounded-full bg-secondary-fixed text-on-secondary-fixed font-headline text-caption mb-sm">
+                <span class="material-symbols-outlined" style="font-size:12px;" aria-hidden="true">grain</span> Vegano
+              </span>
+              <h3 class="font-headline text-body-md md:text-headline-md text-primary mb-xs">Bowl Mediterráneo</h3>
+              <p class="font-body text-caption md:text-body-md text-on-surface-variant hidden sm:block">Quinoa, pepino, tomate cherry, aceitunas, hummus y aceite de oliva.</p>
+              <p class="font-headline text-label-md md:text-body-lg text-primary mt-sm">$6.490</p>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="group bg-background rounded-3xl border border-outline-variant overflow-hidden hover:shadow-xl hover:border-primary/25 transition-all duration-300 reveal">
+            <div class="h-36 md:h-52 overflow-hidden">
+              <img src="img/tofu.jpeg" alt="Bowl Ensalada Tofu" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="p-sm md:p-md">
+              <span class="inline-flex items-center gap-xs py-0.5 px-3 rounded-full bg-primary-fixed text-on-primary-fixed font-headline text-caption mb-sm">
+                <span class="material-symbols-outlined" style="font-size:12px;" aria-hidden="true">spa</span> Sin Gluten
+              </span>
+              <h3 class="font-headline text-body-md md:text-headline-md text-primary mb-xs">Bowl Tofu</h3>
+              <p class="font-body text-caption md:text-body-md text-on-surface-variant hidden sm:block">Tofu marinado, arroz integral, edamame, zanahoria y salsa de sésamo.</p>
+              <p class="font-headline text-label-md md:text-body-lg text-primary mt-sm">$6.990</p>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="group bg-background rounded-3xl border border-outline-variant overflow-hidden hover:shadow-xl hover:border-primary/25 transition-all duration-300 reveal">
+            <div class="h-36 md:h-52 overflow-hidden">
+              <img src="img/proteina verde.jpeg" alt="Bowl Proteína Verde" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="p-sm md:p-md">
+              <span class="inline-flex items-center gap-xs py-0.5 px-3 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-headline text-caption mb-sm">
+                <span class="material-symbols-outlined" style="font-size:12px;" aria-hidden="true">fitness_center</span> Alto en proteína
+              </span>
+              <h3 class="font-headline text-body-md md:text-headline-md text-primary mb-xs">Bowl Proteína Verde</h3>
+              <p class="font-body text-caption md:text-body-md text-on-surface-variant hidden sm:block">Pollo a la plancha, kale, garbanzos, aguacate y vinagreta de limón.</p>
+              <p class="font-headline text-label-md md:text-body-lg text-primary mt-sm">$7.990</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ MENÚ ═══════════════════════ -->
+    <section id="menu" class="py-lg md:py-xl">
+      <div class="max-w-container-max mx-auto px-md md:px-lg">
+        <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-lg md:mb-xl gap-md reveal">
+          <div class="text-center md:text-left">
+            <h2 class="font-headline text-headline-lg text-primary">Explora el Menú</h2>
+            <p class="font-body text-body-md text-on-surface-variant mt-xs">Diseñado para cada momento de tu día.</p>
+          </div>
+          <a href="#pedir" class="text-primary font-headline text-label-md flex items-center gap-xs hover:underline decoration-2 underline-offset-4 justify-center md:justify-start">
+            Ver todas las opciones <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter md:h-[600px]">
+          <!-- Bowls (featured) -->
+          <div class="md:col-span-8 group relative overflow-hidden rounded-[2rem] border border-outline-variant shadow-sm hover:shadow-xl transition-all duration-500 reveal min-h-[320px]">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+            <div
+              class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700"
+              style="background-image: url('img/8.JPG')"
+              role="img" aria-label="Bowls nutritivos de Código Verde"
+            ></div>
+            <div class="absolute bottom-0 left-0 p-md md:p-lg z-20 text-white">
+              <h3 class="font-headline text-headline-md md:text-headline-lg mb-xs">Elige tu Bowl</h3>
+              <p class="font-body text-body-md opacity-90 mb-md max-w-sm">
+                Nuestra firma. Base de granos integrales, proteínas magras y vegetales de estación de la V Región.
+              </p>
+              <a href="#pedir" class="inline-flex items-center gap-sm bg-white/20 backdrop-blur-md text-white border border-white/30 px-md py-sm rounded-xl font-headline text-label-md hover:bg-white hover:text-primary transition-all btn-bounce">
+                Explorar Bowls
+              </a>
+            </div>
+          </div>
+
+          <!-- Wraps + Jugos column -->
+          <div class="md:col-span-4 flex flex-col gap-gutter reveal">
+            <!-- Wraps -->
+            <div class="flex-1 group relative overflow-hidden rounded-[2rem] border border-outline-variant shadow-sm hover:shadow-xl transition-all duration-500 min-h-[220px]">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+              <div
+                class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700"
+                style="background-image: url('img/3.jpg')"
+                role="img" aria-label="Fruta a granel de Código Verde"
+              ></div>
+              <div class="absolute bottom-0 left-0 p-md z-20 text-white">
+                <h3 class="font-headline text-headline-md">Fruta a Granel</h3>
+                <a href="#pedir" class="mt-sm text-white/80 font-headline text-label-md hover:text-white flex items-center gap-xs">
+                  Ver más <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Jugos -->
+            <div class="flex-1 group relative overflow-hidden rounded-[2rem] border border-outline-variant shadow-sm hover:shadow-xl transition-all duration-500 min-h-[220px]">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+              <div
+                class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700"
+                style="background-image: url('img/5.jpg')"
+                role="img" aria-label="Bebestibles de Código Verde"
+              ></div>
+              <div class="absolute bottom-0 left-0 p-md z-20 text-white">
+                <h3 class="font-headline text-headline-md">Bebestibles</h3>
+                <a href="#pedir" class="mt-sm text-white/80 font-headline text-label-md hover:text-white flex items-center gap-xs">
+                  Ver más <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ PROPUESTA ═══════════════════════ -->
+    <section id="nosotros" class="py-lg md:py-xl">
+      <div class="max-w-container-max mx-auto px-md md:px-lg">
+
+        <div class="text-center mb-lg md:mb-xl reveal">
+          <h2 class="font-headline text-headline-lg text-primary mb-sm">Nuestros Valores</h2>
+          <p class="font-body text-body-md text-on-surface-variant max-w-2xl mx-auto">
+            Cosechamos con productores locales de la V Región y preparamos al momento. Transparencia total desde la semilla hasta tu mesa.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+
+          <div class="bg-background p-md md:p-xl rounded-3xl border border-outline-variant hover:border-primary/30 hover:shadow-md transition-all duration-300 reveal text-center">
+            <span class="material-symbols-outlined text-primary mb-md block" style="font-size: 56px; font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 48;" aria-hidden="true">eco</span>
+            <h3 class="font-headline text-headline-md text-primary mb-sm">Fresco y Local</h3>
+            <p class="font-body text-body-md text-on-surface-variant">
+              Trabajamos con productores de la Región de Valparaíso para que el sabor y los nutrientes lleguen intactos a tu plato.
+            </p>
+          </div>
+
+          <div class="bg-background p-md md:p-xl rounded-3xl border border-outline-variant hover:border-primary/30 hover:shadow-md transition-all duration-300 reveal text-center">
+            <span class="material-symbols-outlined text-secondary mb-md block" style="font-size: 56px; font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 48;" aria-hidden="true">hourglass_empty</span>
+            <h3 class="font-headline text-headline-md text-primary mb-sm">Conciencia</h3>
+            <p class="font-body text-body-md text-on-surface-variant">
+              Sabemos que tu tiempo es tuyo. Somos conscientes de cada minuto que nos entregas y trabajamos para que lo vivas bien, sin esperas innecesarias.
+            </p>
+          </div>
+
+          <div class="bg-background p-md md:p-xl rounded-3xl border border-outline-variant hover:border-primary/30 hover:shadow-md transition-all duration-300 reveal text-center">
+            <span class="material-symbols-outlined text-primary mb-md block" style="font-size: 56px; font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 48;" aria-hidden="true">psychology</span>
+            <h3 class="font-headline text-headline-md text-primary mb-sm">Nutrición Inteligente</h3>
+            <p class="font-body text-body-md text-on-surface-variant">
+              Cada ingrediente tiene un propósito. Diseñamos platos que te dan energía sostenida para tu jornada en el puerto.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ CTA / NEWSLETTER ═══════════════════════ -->
+    <section id="pedir" class="py-lg md:py-xl px-md md:px-lg">
+      <div class="max-w-container-max mx-auto bg-primary text-on-primary rounded-[2rem] md:rounded-[3rem] p-lg md:p-xl relative overflow-hidden reveal">
+        <div class="relative z-10 flex flex-col items-center text-center">
+          <h2 class="font-headline text-headline-xl-m md:text-headline-xl mb-md">
+            ¿Listo para cultivar tu bienestar?
+          </h2>
+          <p class="font-body text-body-lg opacity-80 mb-lg max-w-xl">
+            Únete a nuestra comunidad y recibe un 15% de descuento en tu primer pedido saludable.
+          </p>
+          <div class="w-full max-w-md flex flex-col sm:flex-row gap-sm">
+            <label for="email-input" class="sr-only">Tu correo electrónico</label>
+            <input
+              id="email-input"
+              type="email"
+              placeholder="Tu correo electrónico"
+              autocomplete="email"
+              class="flex-1 bg-white/10 border border-white/20 rounded-xl px-md py-md text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-primary-fixed"
+            />
+            <button class="bg-primary-fixed text-on-primary-fixed px-lg py-md rounded-xl font-headline text-label-md btn-bounce transition-transform">
+              Suscribirme
+            </button>
+          </div>
+        </div>
+        <!-- Decorative blobs -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-primary-container rounded-full blur-3xl -translate-y-1/2 opacity-20 overflow-hidden" aria-hidden="true"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-tertiary-container rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 opacity-20" aria-hidden="true"></div>
+      </div>
+    </section>
+    </div><!-- /pattern-bg -->
+
+  </main>
+
+  <!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+  <footer id="contacto" class="relative overflow-hidden" style="background:#282d26;">
+
+    <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center px-md md:px-lg py-lg md:py-xl max-w-container-max mx-auto gap-lg md:gap-xl">
+
+      <!-- Brand -->
+      <div class="max-w-sm">
+        <img src="elementos/logo_ofc.svg" alt="Código Verde" class="h-24 md:h-40 w-auto object-contain mb-sm">
+        <p class="font-body text-caption text-white/55">
+          Tu tiempo importa. Comida saludable al paso en Calle Esmeralda #1098, Valparaíso.
+        </p>
+      </div>
+
+      <!-- Links grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-lg w-full md:w-auto">
+        <div class="flex flex-col gap-sm">
+          <span class="font-headline text-label-md text-white/80">Redes</span>
+          <a href="https://www.instagram.com/codigo.verde.valpo/" target="_blank" rel="noopener noreferrer" class="font-body text-caption text-white/55 hover:text-white underline">Instagram</a>
+          <a href="#" class="font-body text-caption text-white/55 hover:text-white underline">Facebook</a>
+          <a href="#" class="font-body text-caption text-white/55 hover:text-white underline">WhatsApp</a>
+        </div>
+        <div class="flex flex-col gap-sm">
+          <span class="font-headline text-label-md text-white/80">Horarios</span>
+          <span class="font-body text-caption text-white/55">Lun–Vie 8am–8pm</span>
+          <span class="font-body text-caption text-white/55">Sáb 9am–4pm</span>
+        </div>
+        <div class="flex flex-col gap-sm">
+          <span class="font-headline text-label-md text-white/80">Ubicación</span>
+          <span class="font-body text-caption text-white/55">Calle Esmeralda #1098, Valparaíso</span>
+          <a href="https://maps.google.com/?q=Calle+Esmeralda+1098+Valparaiso" target="_blank" rel="noopener noreferrer"
+             class="font-body text-caption text-white/70 hover:text-white flex items-center gap-xs">
+            Ver en mapa <span class="material-symbols-outlined text-sm" aria-hidden="true">open_in_new</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mapa -->
+    <div class="relative z-10 max-w-container-max mx-auto px-md md:px-lg pb-lg md:pb-xl">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3344.3!2d-71.6274!3d-33.0472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9689e1a57e0a0001%3A0x1!2sCalle+Esmeralda+1098%2C+Valpara%C3%ADso!5e0!3m2!1ses!2scl!4v1"
+        width="100%" height="260"
+        style="border:0; border-radius:1rem; filter: grayscale(30%) contrast(1.05);"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="Ubicación Código Verde — Calle Esmeralda #1098, Valparaíso">
+      </iframe>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="relative z-10 max-w-container-max mx-auto px-md md:px-lg py-md border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-md">
+      <p class="font-body text-caption text-white/40">
+        © 2026 Código Verde · Valparaíso. Todos los derechos reservados.
+      </p>
+      <div class="flex gap-md">
+        <a href="#" class="font-body text-caption text-white/40 hover:text-white">Privacidad</a>
+        <a href="#" class="font-body text-caption text-white/40 hover:text-white">Términos</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════ SCRIPTS ═══════════════════════ -->
+  <script>
+    // ── Scroll-reveal with Intersection Observer ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, idx) => {
+        if (entry.isIntersecting) {
+          // Stagger siblings within same parent
+          const siblings = entry.target.parentElement.querySelectorAll('.reveal');
+          let delay = 0;
+          siblings.forEach((sib, i) => { if (sib === entry.target) delay = i * 100; });
+          entry.target.style.transitionDelay = `${delay}ms`;
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Sticky navbar shadow ──
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('shadow-sm', window.scrollY > 20);
+    }, { passive: true });
+
+    // ── Mobile menu toggle ──
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const lines = menuBtn.querySelectorAll('.hamburger-line');
+
+    menuBtn.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', isOpen);
+      // Animate hamburger → X
+      if (isOpen) {
+        lines[0].style.transform = 'translateY(7px) rotate(45deg)';
+        lines[1].style.opacity = '0';
+        lines[2].style.transform = 'translateY(-7px) rotate(-45deg)';
+      } else {
+        lines[0].style.transform = '';
+        lines[1].style.opacity = '';
+        lines[2].style.transform = '';
+      }
+    });
+
+    // Close mobile menu on link click
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        lines[0].style.transform = '';
+        lines[1].style.opacity = '';
+        lines[2].style.transform = '';
+      });
+    });
+
+    // ── Hero Carousel ──
+    (function () {
+      const slides = document.querySelectorAll('#hero-carousel .carousel-slide');
+      const dotsContainer = document.getElementById('carousel-dots');
+      let current = 0;
+      let timer;
+
+      // Build dots
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', `Ir a foto ${i + 1}`);
+        dot.addEventListener('click', () => goTo(i));
+        dotsContainer.appendChild(dot);
+      });
+
+      function goTo(n) {
+        slides[current].classList.remove('active');
+        dotsContainer.children[current].classList.remove('active');
+        current = (n + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        dotsContainer.children[current].classList.add('active');
+        resetTimer();
+      }
+
+      function resetTimer() {
+        clearInterval(timer);
+        timer = setInterval(() => goTo(current + 1), 4000);
+      }
+
+      document.getElementById('carousel-prev').addEventListener('click', () => goTo(current - 1));
+      document.getElementById('carousel-next').addEventListener('click', () => goTo(current + 1));
+
+      resetTimer();
+    })();
+  </script>
+</body>
+</html>
